@@ -18,7 +18,7 @@ public class AckListener {
 
             //进行业务逻辑处理
             System.out.println("业务逻辑处理");
-            int num = 3/0;
+//            int num = 3/0;
             System.out.println("业务处理完成");
             //肯定确认
             channel.basicAck(deliveryTag,true);
