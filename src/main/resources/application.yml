@@ -7,5 +7,5 @@ spring:
     virtual-host: extension
     listener:
       simple:
-        acknowledge-mode: none # auto/none/manual
+        acknowledge-mode: manual # auto/none/manual
 

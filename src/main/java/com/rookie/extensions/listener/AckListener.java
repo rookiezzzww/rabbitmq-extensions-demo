@@ -21,10 +21,10 @@ public class AckListener {
             int num = 3/0;
             System.out.println("业务处理完成");
             //肯定确认
-            channel.basicAck(deliveryTag,false);
+            channel.basicAck(deliveryTag,true);
         } catch (Exception e) {
             //否定确认
-            channel.basicNack(deliveryTag, false, true);
+            channel.basicNack(deliveryTag, true, true);
         }
     }
 
