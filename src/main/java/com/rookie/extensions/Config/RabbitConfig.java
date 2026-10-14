@@ -45,6 +45,28 @@ public class RabbitConfig {
     }
     @Bean("retryBinding")
     public Binding retryBinding(@Qualifier("retryQueue") Queue queue, @Qualifier("retryExchange") Exchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with("retry").noargs();
+        return BindingBuilder.bind(queue).to(exchange).with("").noargs();
+    }
+    //TTL
+    @Bean("ttlQueue")
+    public Queue ttlQueue(){
+        return QueueBuilder.durable(Constants.TTL_QUEUE).build();
+    }
+    @Bean("ttlQueue2")
+    public Queue ttlQueue2(){
+        //这里的ttl是队列属性，即队列中所有消息的ttl，不是队列的过期时间
+        return QueueBuilder.durable(Constants.TTL_QUEUE2).ttl(20*1000).build();
+    }
+    @Bean("ttlExchange")
+    public Exchange ttlExchange() {
+        return ExchangeBuilder.fanoutExchange(Constants.TTL_EXCHANGE_NAME).durable(true).build();
+    }
+    @Bean("ttlBinding")
+    public Binding ttlBinding(@Qualifier("ttlQueue") Queue queue, @Qualifier("ttlExchange") Exchange exchange){
+        return BindingBuilder.bind(queue).to(exchange).with("").noargs();
+    }
+    @Bean("ttlBinding2")
+    public Binding ttlBinding2(@Qualifier("ttlQueue2") Queue queue, @Qualifier("ttlExchange") Exchange exchange){
+        return BindingBuilder.bind(queue).to(exchange).with("").noargs();
     }
 }

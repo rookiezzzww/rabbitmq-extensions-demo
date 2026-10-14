@@ -57,4 +57,36 @@ public class ProducerController {
         rabbitTemplate.convertAndSend(Constants.RETRY_EXCHANGE_NAME, "", msg);
         return "发送成功";
     }
+    @RequestMapping("/ttl")
+    //用messagePostProcessor自动走转换器，如果是对象能自动转 JSON，推荐。
+    // 不推荐ttl2方法，因为走的是默认的转换器，如果是对象，就麻烦了
+    public String testTTL() {
+        String msg = "Hello, TTL!";
+        rabbitTemplate.convertAndSend(Constants.TTL_EXCHANGE_NAME, "", msg, messagePostProcessor -> {
+            messagePostProcessor.getMessageProperties().setExpiration("10000");
+            return messagePostProcessor;
+        });
+        return "发送成功";
+    }
+//    @RequestMapping("/ttl2")
+//    public String testTTL2() {
+//        String msg = "Hello, TTL!";
+//        MessageProperties messageProperties = new MessageProperties();
+//        messageProperties.setExpiration("10000");
+//        Message message = new Message(msg.getBytes(), messageProperties);
+//        rabbitTemplate.convertAndSend(Constants.TTL_EXCHANGE_NAME, "", message);
+//        return "发送成功";
+//    }
+    @RequestMapping("/ttlQueue2")
+    public String testTTLQueue() {
+        String msg = "Hello, TTL Queue2!";
+        //发送不带ttl的消息，那么消息的ttl就是队列的ttl
+        rabbitTemplate.convertAndSend(Constants.TTL_EXCHANGE_NAME, "", msg);
+        //发送带ttl的消息，那么消息的ttl就是队列的ttl和消息的ttl的最小值
+//        rabbitTemplate.convertAndSend(Constants.TTL_EXCHANGE_NAME, "", msg, messagePostProcessor -> {
+//            messagePostProcessor.getMessageProperties().setExpiration("10000");
+//            return messagePostProcessor;
+//        });
+        return "发送成功";
+    }
 }
