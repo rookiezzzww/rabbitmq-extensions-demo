@@ -51,4 +51,10 @@ public class ProducerController {
         confirmRabbitTemplate.convertAndSend(Constants.CONFIRM_EXCHANGE, "wrongRoutingKey", msg, correlationData);
         return "发送成功";
     }
+    @RequestMapping("/retry")
+    public String testRetry() {
+        String msg = "Hello, retry!";
+        rabbitTemplate.convertAndSend(Constants.RETRY_EXCHANGE_NAME, "", msg);
+        return "发送成功";
+    }
 }
