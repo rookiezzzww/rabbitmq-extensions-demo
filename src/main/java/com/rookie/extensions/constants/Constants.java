@@ -18,4 +18,10 @@ public class Constants {
     public static final String TTL_EXCHANGE_NAME = "ttl_exchange";
 
     public static final String TTL_QUEUE2 = "ttl_queue2";
+
+    //死信队列
+    public static final String DLX_EXCHANGE_NAME = "dlx_exchange";
+    public static final String DLX_QUEUE = "dlx_queue";
+    public static final String NORMAL_EXCHANGE_NAME = "normal_exchange";
+    public static final String NORMAL_QUEUE = "normal_queue";
 }

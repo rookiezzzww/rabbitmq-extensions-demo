@@ -89,4 +89,15 @@ public class ProducerController {
 //        });
         return "发送成功";
     }
+    //测试死信队列
+    @RequestMapping("/dlx")
+    public String testDLX() {
+        String msg = "Hello, DLX!";
+        rabbitTemplate.convertAndSend(Constants.NORMAL_EXCHANGE_NAME, "normal", msg);
+        //测试队列⻓度
+//        for (int i = 0; i < 20; i++) {
+//            rabbitTemplate.convertAndSend(Constants.NORMAL_EXCHANGE_NAME, "normal", msg + i);
+//        }
+        return "发送成功";
+    }
 }
