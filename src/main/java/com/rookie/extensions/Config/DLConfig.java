@@ -38,9 +38,9 @@ public class DLConfig {
     public Queue normalQueue2() {
         return QueueBuilder.durable(Constants.NORMAL_QUEUE)
                 .deadLetterExchange(Constants.DLX_EXCHANGE_NAME)
-                .deadLetterRoutingKey("dlx")
-                .ttl(10000)
-                .maxLength(10)
+                .deadLetterRoutingKey("dlx")//死信队列路由键
+//                .ttl(10000)//消息过期时间10秒
+                .maxLength(10)//队列最大长度为10
                 .build();
     }
 

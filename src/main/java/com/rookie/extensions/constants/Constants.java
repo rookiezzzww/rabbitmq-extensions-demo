@@ -24,4 +24,8 @@ public class Constants {
     public static final String DLX_QUEUE = "dlx_queue";
     public static final String NORMAL_EXCHANGE_NAME = "normal_exchange";
     public static final String NORMAL_QUEUE = "normal_queue";
+
+    //delay
+    public static final String DELAY_QUEUE = "delay_queue";
+    public static final String DELAY_EXCHANGE_NAME = "delay_exchange";
 }

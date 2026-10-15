@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class DLListener {
     /**
-     * 正常队列如果消费失败，比如消费异常，并且设置了不重新入队，那么消息也将被发送到死信队列
+     * 正模拟常队列消费失败，比如消费异常，并且设置了不重新入队，让消息被发送到死信队列
      *
      */
 //    @RabbitListener(queues = Constants.NORMAL_QUEUE)
@@ -35,7 +35,7 @@ public class DLListener {
     @RabbitListener(queues = Constants.DLX_QUEUE)
     public void dlHandMessage(Message message, Channel channel) throws Exception {
         //消费者逻辑
-        System.out.printf("[dl.queue] %tc 接收到消息: %s, deliveryTag: %d \n", new Date(), new String(message.getBody(),"UTF-8"), message.getMessageProperties().getDeliveryTag());
+        System.out.printf("[dl.queue] %tc 接收到消息: %s, deliveryTag: %d%n", new Date(), new String(message.getBody(),"UTF-8"), message.getMessageProperties().getDeliveryTag());
 
     }
 }

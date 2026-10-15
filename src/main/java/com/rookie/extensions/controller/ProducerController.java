@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("/producer")
 public class ProducerController {
@@ -98,6 +100,38 @@ public class ProducerController {
 //        for (int i = 0; i < 20; i++) {
 //            rabbitTemplate.convertAndSend(Constants.NORMAL_EXCHANGE_NAME, "normal", msg + i);
 //        }
+        return "发送成功";
+    }
+    //delay
+    @RequestMapping("/delay")
+    public String testDelay() {
+        String msg = "Hello, Delay!";
+        rabbitTemplate.convertAndSend(Constants.NORMAL_EXCHANGE_NAME, "normal", msg +" 10s "+ new Date(), messagePostProcessor -> {
+            messagePostProcessor.getMessageProperties().setExpiration("10000");
+            return messagePostProcessor;
+        });
+        rabbitTemplate.convertAndSend(Constants.NORMAL_EXCHANGE_NAME, "normal", msg +" 15s "+ new Date(), messagePostProcessor -> {
+            messagePostProcessor.getMessageProperties().setExpiration("15000");
+            return messagePostProcessor;
+        });
+        return "发送成功";
+    }
+
+    /**
+     * 测试延迟队列插件，这时用的是setDelayLong,而非setExpiration
+     * @return
+     */
+    @RequestMapping("/delay2")
+    public String testDelay2() {
+        String msg = "Hello, Delay2!";
+        rabbitTemplate.convertAndSend(Constants.DELAY_EXCHANGE_NAME, "delayed", msg +" 20s "+ new Date(), messagePostProcessor -> {
+            messagePostProcessor.getMessageProperties().setDelayLong(20000L);
+            return messagePostProcessor;
+        });
+        rabbitTemplate.convertAndSend(Constants.DELAY_EXCHANGE_NAME, "delayed", msg +" 10s "+ new Date(), messagePostProcessor -> {
+            messagePostProcessor.getMessageProperties().setDelayLong(10000L);
+            return messagePostProcessor;
+        });
         return "发送成功";
     }
 }
