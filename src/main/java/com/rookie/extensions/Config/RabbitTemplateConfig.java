@@ -3,6 +3,7 @@ package com.rookie.extensions.Config;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.transaction.RabbitTransactionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,6 +39,19 @@ public class RabbitTemplateConfig {
                 System.out.printf("消息被退回: %s\n", returnedMessage);
             }
         });
+        return rabbitTemplate;
+    }
+    //开启事务
+    //1.开启事务管理器
+    @Bean
+    public RabbitTransactionManager rabbitTransactionManager(ConnectionFactory connectionFactory){
+        return new RabbitTransactionManager(connectionFactory);
+    }
+    //2.设置事务为true
+    @Bean("transRabbitTemplate")
+    public RabbitTemplate transRabbitTemplate(ConnectionFactory connectionFactory){
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setChannelTransacted(true);
         return rabbitTemplate;
     }
 }

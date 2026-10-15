@@ -8,6 +8,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,9 @@ public class ProducerController {
 
     @Resource(name = "confirmRabbitTemplate")
     private RabbitTemplate confirmRabbitTemplate; // 确认机制
+
+    @Resource(name = "transRabbitTemplate")
+    private RabbitTemplate transRabbitTemplate; // 事务
 
     @RequestMapping("/ack")
     public String test() {
@@ -132,6 +136,16 @@ public class ProducerController {
             messagePostProcessor.getMessageProperties().setDelayLong(10000L);
             return messagePostProcessor;
         });
+        return "发送成功";
+    }
+    //事务
+    @Transactional
+    @RequestMapping("/transaction")
+    public String testTransaction() {
+        String msg = "Hello, Transaction!";
+        transRabbitTemplate.convertAndSend("", Constants.TRANS_QUEUE, msg + "1");
+        int i = 1 / 0;
+        transRabbitTemplate.convertAndSend("", Constants.TRANS_QUEUE, msg + "2");
         return "发送成功";
     }
 }
