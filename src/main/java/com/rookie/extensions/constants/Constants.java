@@ -31,4 +31,8 @@ public class Constants {
 
     //事务
     public static final String TRANS_QUEUE = "trans_queue";
+
+    //Qos
+    public static final String QOS_QUEUE = "qos_queue";
+    public static final String QOS_EXCHANGE_NAME = "qos_exchange";
 }
